@@ -1,3 +1,5 @@
+import "./css/popup.css";
+
 const profiles = {
   regular3g: {
     download: (750 * 1024) / 8, // 750 Kbps
@@ -104,3 +106,41 @@ document.getElementById("resetThrottle").addEventListener("click", async () => {
     tabId: tab.id,
   });
 });
+
+// Format bytes to human readable format
+function formatBytes(bytes) {
+  if (bytes < 1024) return Math.round(bytes) + " B";
+  if (bytes < 1024 * 1024) return Math.round(bytes / 1024) + " KB";
+  if (bytes < 1024 * 1024 * 1024)
+    return Math.round(bytes / (1024 * 1024)) + " MB";
+  return (bytes / (1024 * 1024 * 1024)).toFixed(1) + " GB";
+}
+
+// Update bandwidth saved display
+function updateBandwidthDisplay() {
+  chrome.runtime.sendMessage({ action: "getBandwidthSaved" }, (response) => {
+    if (response && response.totalBytesSaved) {
+      const bandwidthElement = document.getElementById("bandwidthSaved");
+      const amountElement = bandwidthElement.querySelector(".amount");
+      const oldValue = amountElement.dataset.value || 0;
+      const newValue = response.totalBytesSaved;
+
+      // Update the display
+      amountElement.textContent = formatBytes(newValue);
+      amountElement.dataset.value = newValue;
+
+      // Add celebration animation if value increased significantly
+      if (newValue - oldValue > 1024 * 1024) {
+        // More than 1MB difference
+        bandwidthElement.classList.add("celebrating");
+        setTimeout(() => {
+          bandwidthElement.classList.remove("celebrating");
+        }, 500);
+      }
+    }
+  });
+}
+
+// Update bandwidth display periodically
+setInterval(updateBandwidthDisplay, 1000);
+updateBandwidthDisplay(); // Initial update

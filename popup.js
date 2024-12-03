@@ -56,6 +56,7 @@ function showProfileInfo(profileId) {
   // Update active profile display
   const activeProfile = document.getElementById("activeProfile");
   activeProfile.textContent = profileNames[profileId] || "Unknown";
+  activeProfile.setAttribute("data-profile", profileId);
 }
 
 // Initialize profile info display
@@ -87,6 +88,7 @@ document.getElementById("applyThrottle").addEventListener("click", async () => {
   chrome.runtime.sendMessage({
     action: "setThrottle",
     profile: profiles[profile],
+    profileId: profile,
     tabId: tab.id,
   });
 });
@@ -98,6 +100,7 @@ document.getElementById("resetThrottle").addEventListener("click", async () => {
   chrome.runtime.sendMessage({
     action: "setThrottle",
     profile: profiles.nothrottle,
+    profileId: "nothrottle",
     tabId: tab.id,
   });
 });

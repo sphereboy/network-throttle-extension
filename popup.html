@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Network Throttle</title>
+    <style>
+      body {
+        width: 300px;
+        padding: 16px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        margin: 0;
+      }
+      .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .header {
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #eee;
+      }
+      .header h1 {
+        font-size: 16px;
+        margin: 0;
+        color: #1a73e8;
+      }
+      .status {
+        font-size: 13px;
+        color: #5f6368;
+        margin-top: 4px;
+      }
+      .profile-group {
+        background: #f8f9fa;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #dadce0;
+      }
+      select {
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: 1px solid #dadce0;
+        font-size: 14px;
+        background: white;
+        width: 100%;
+        margin-bottom: 8px;
+      }
+      .profile-info {
+        font-size: 13px;
+        color: #5f6368;
+        margin-top: 8px;
+        display: none;
+      }
+      .profile-info.active {
+        display: block;
+      }
+      .profile-info dt {
+        float: left;
+        clear: left;
+        width: 100px;
+        color: #202124;
+        font-weight: 500;
+      }
+      .profile-info dd {
+        margin-left: 110px;
+        margin-bottom: 4px;
+      }
+      button {
+        padding: 8px 16px;
+        border-radius: 6px;
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s;
+      }
+      #applyThrottle {
+        background: #1a73e8;
+        color: white;
+      }
+      #applyThrottle:hover {
+        background: #1557b0;
+      }
+      #resetThrottle {
+        background: #fff;
+        border: 1px solid #dadce0;
+        color: #5f6368;
+      }
+      #resetThrottle:hover {
+        background: #f8f9fa;
+        border-color: #5f6368;
+      }
+      .active-profile {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 12px;
+        background: #e8f0fe;
+        color: #1a73e8;
+        font-size: 12px;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Network Throttle Controller</h1>
+      <div class="status">
+        Current Profile:
+        <span class="active-profile" id="activeProfile">No Throttling</span>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="profile-group">
+        <select id="profileSelect">
+          <option value="regular3g">Regular 3G</option>
+          <option value="fast3g">Fast 3G</option>
+          <option value="slow">Slow Connection</option>
+          <option value="offline">Offline</option>
+          <option value="nothrottle">No Throttling</option>
+        </select>
+
+        <div id="regular3g-info" class="profile-info">
+          <dl>
+            <dt>Download:</dt>
+            <dd>750 Kbps</dd>
+            <dt>Upload:</dt>
+            <dd>250 Kbps</dd>
+            <dt>Latency:</dt>
+            <dd>100 ms</dd>
+            <dt>Use Case:</dt>
+            <dd>Testing basic mobile experience</dd>
+          </dl>
+        </div>
+
+        <div id="fast3g-info" class="profile-info">
+          <dl>
+            <dt>Download:</dt>
+            <dd>1.5 Mbps</dd>
+            <dt>Upload:</dt>
+            <dd>750 Kbps</dd>
+            <dt>Latency:</dt>
+            <dd>40 ms</dd>
+            <dt>Use Case:</dt>
+            <dd>Testing good mobile connection</dd>
+          </dl>
+        </div>
+
+        <div id="slow-info" class="profile-info">
+          <dl>
+            <dt>Download:</dt>
+            <dd>100 Kbps</dd>
+            <dt>Upload:</dt>
+            <dd>50 Kbps</dd>
+            <dt>Latency:</dt>
+            <dd>500 ms</dd>
+            <dt>Use Case:</dt>
+            <dd>Testing poor network conditions</dd>
+          </dl>
+        </div>
+
+        <div id="offline-info" class="profile-info">
+          <dl>
+            <dt>Status:</dt>
+            <dd>No network connection</dd>
+            <dt>Use Case:</dt>
+            <dd>Testing offline functionality</dd>
+          </dl>
+        </div>
+
+        <div id="nothrottle-info" class="profile-info">
+          <dl>
+            <dt>Status:</dt>
+            <dd>Normal network conditions</dd>
+            <dt>Use Case:</dt>
+            <dd>Regular browsing experience</dd>
+          </dl>
+        </div>
+      </div>
+
+      <button id="applyThrottle">Apply Throttling</button>
+      <button id="resetThrottle">Reset Connection</button>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>

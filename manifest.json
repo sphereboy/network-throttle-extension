@@ -3,7 +3,7 @@
   "name": "Network Throttle Controller",
   "version": "1.0",
   "description": "Control network throttling for testing and development",
-  "permissions": ["debugger", "storage", "tabs"],
+  "permissions": ["debugger", "storage", "tabs", "notifications"],
   "action": {
     "default_popup": "popup.html"
   },
